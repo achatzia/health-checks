@@ -28,10 +28,18 @@ def main():
     (check_reboot, "Pending Reboot"),
     (check_root_full, "Root partition full"),
     ]
+    everything_ok = True # We want to show more than one message if more than
+                         # on check is failing
     for check, mesg in checks:
         if check():
             print(mesg)
-            sys.exit(1)
+            everything_ok = False # Change the variable to false if one of the
+                                  # checks finds a problem
+
+
+    if not everything_ok:
+        sys.exit(1) # Exit with an error code Only AFTER having done all the checks
+
 
     print("Everything OK.")
     sys.exit(0)
